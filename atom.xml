@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Kakeru&#39;s blog</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2019-06-25T07:49:19.499Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>Kakeru</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://yoursite.com/2019/06/25/my-first-blog/"/>
+    <id>http://yoursite.com/2019/06/25/my-first-blog/</id>
+    <published>2019-06-25T02:34:40.996Z</published>
+    <updated>2019-06-25T07:49:19.499Z</updated>
+    
+    <content type="html"><![CDATA[<p>﻿﻿﻿—<br>date: 2019-06-25 10:34:40</p><h2 id="First-Blog"><a href="#First-Blog" class="headerlink" title="First Blog"></a>First Blog</h2><p>辛苦建完了博客</p><p>还有待完善…</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;﻿﻿﻿—&lt;br&gt;date: 2019-06-25 10:34:40&lt;/p&gt;
+&lt;h2 id=&quot;First-Blog&quot;&gt;&lt;a href=&quot;#First-Blog&quot; class=&quot;headerlink&quot; title=&quot;First Blog&quot;&gt;&lt;/a&gt;First Blog&lt;/h2&gt;
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
